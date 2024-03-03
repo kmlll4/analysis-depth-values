@@ -4,6 +4,7 @@ import numpy as np
 import pandas as pd
 from tqdm import tqdm
 import numpy as np
+from datetime import datetime
 
 def path_replace(rgb_path):
     """
@@ -12,7 +13,7 @@ def path_replace(rgb_path):
     png_path = new_string.replace("jpg", "png")
     return png_path
 
-def main(data_root_path, pkl_path): 
+def main(data_root_path, pkl_path, output_csv_path): 
     """
     """
     df = pkl_loader(pkl_path)
@@ -51,11 +52,16 @@ def main(data_root_path, pkl_path):
 
             pbar.update(1)
 
-    output_df.to_csv('data.csv', index=False)
+    output_df.to_csv(output_csv_path, index=False)
 
 if __name__ == "__main__":
     """
     """
+    now = datetime.now()
+    formatted_datetime = now.strftime("%Y%m%d%H%M%S")
+
     data_root_path = "./data/mass_train_data_rgb_depth"
-    pkl_path = "./data/latest_from_xxx_abs_path_only_floor_depth.pkl"
-    main(data_root_path, pkl_path)
+    input_pkl_path = "./data/latest_from_xxx_abs_path_only_floor_depth.pkl"
+    output_csv_path = f"./logs/{formatted_datetime}_depth_values.csv"
+    
+    main(data_root_path, input_pkl_path, output_csv_path)
